@@ -8,6 +8,9 @@
     body {
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
+    .panel{
+      position: relative;
+    }
     #map {
       position: relative;
     }
@@ -17,10 +20,37 @@
     #gridOverlay {
       z-index: 10;
     }
+    #list {
+      position: absolute;
+      left: 600px;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      background-color: #666;
+      overflow-y: auto;
+    }
+    #slidelist {
+      margin: 0;
+      padding: 5px 5px 5px 40px;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;      
+    }
+    #slidelist li {
+      margin: 3px;
+      padding: 0;
+      border: 1px solid #999;
+      border-radius: 4px;
+      padding: 4px;
+      background-color: #555;
+    }
     #tooltip {
       position: absolute;
-      width: 200px;
-      height: 3em;
+      width: 14em;
+      height: 1.2em;
       overflow: hidden;
       border: 1px solid #999;
       border-radius: 4px;
@@ -42,6 +72,9 @@
       width: 95%;
       height: 12em;
     }
+    #detail {
+      width: 500px;
+    }
     #detail p {
       margin: 0;
     }
@@ -51,13 +84,16 @@
   </style>
 </head>
 <body>
+  <div id="tooltip" class="hidden">
+    Tooltip
+  </div>
   <section id="main" class="panel">
+    <div id="list">
+      <ol id="slidelist"></ol>
+    </div>
     <div id="map">
       <canvas id="grid"></canvas>  
       <div id="gridOverlay"></div>  
-      <div id="tooltip">
-        Tooltip
-      </div>
     </div>
     <div id="detail" class="hidden">
       <div id="detailContent"></div>

@@ -76,17 +76,13 @@ define([
   }
 
   function showDetail(){
-    $("#map").addClass("hidden");
-    $("#maptoolbar").addClass("hidden");
-    $("#detail").removeClass("hidden");
-    $("#detailtoolbar").removeClass("hidden");
+    $("#map, #maptoolbar").addClass("hidden");
+    $("#detail, #detailtoolbar").removeClass("hidden");
   }
   
   function hideDetail(){
-    $("#detail").addClass("hidden");
-    $("#detailtoolbar").addClass("hidden");
-    $("#map").removeClass("hidden");
-    $("#maptoolbar").removeClass("hidden");
+    $("#detail, #detailtoolbar").addClass("hidden");
+    $("#map, maptoolbar").removeClass("hidden");
   }
 
   function cancelDetailEdit(){
@@ -117,11 +113,24 @@ define([
     $detail.html( tmpl( slide ) );
   }
   
+  function listUpdate(){
+    $list = $('#slidelist');
+    $list.delegate('li', 'dragstart', function(e){
+      console.log("drag start: ", e.currentTarget.innerHTML);
+    });
+    Object.keys(slidesById).forEach(function(id, idx){
+      var slide = slidesById[id];
+      var slideNo = 1+idx;
+      $list.append('<li draggable="true">' + slideNo + ': ' + slide.title + '</li>');
+    });
+  }
+  
   function editorInit(){
     console.log("editorInit");
     $('#gridOverlay, #map').css({
       width: worldSize.width*tileSize,
-      height: worldSize.height*tileSize
+      height: worldSize.height*tileSize,
+      outline: "1px dotted #666"
     });
     mapNode = $('#grid')[0];
     mapNode.width = worldSize.width*tileSize;
@@ -146,6 +155,14 @@ define([
 
       toolAction(x, y, currentTool);
     });
+    $('#gridOverlay')
+      .mouseover(function(event){
+        $("#tooltip").removeClass("hidden");
+      })
+      .mouseout(function(event){
+        $("#tooltip").addClass("hidden");
+      });
+      
     $('#gridOverlay').mousemove(function(event){
       var x = Math.floor(event.clientX/tileSize), 
           y = Math.floor(event.clientY/tileSize),
@@ -153,8 +170,8 @@ define([
       var slide = slidesByCoords[xy] || { x: x, y: y, title: "Untitled", body: "--No content--" };
 
       $("#tooltip").css({
-        top: event.clientY, 
-        left: event.clientX 
+        top: event.clientY+10, 
+        left: event.clientX+10 
       }).html( x+'/'+y + ": " + slide.title );
     });
     
@@ -176,6 +193,7 @@ define([
   function init(){
     editorInit();
     drawSlidesMap( $('#grid')[0] );
+    listUpdate();
   }
 
   function trim(text){
