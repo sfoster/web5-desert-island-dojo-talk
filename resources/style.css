@@ -1,0 +1,20 @@
+/* ====== media ====== */
+.media {margin:10px;}
+.media, .bd {overflow:hidden; _overflow:visible; zoom:1;}
+.media .img {float:left; margin-right: 10px;}
+.media .img img, 
+.media .img .imgblock {display:block;}
+.media .imgExt{ float:right; margin-left: 10px;}
+
+.panel {
+  border: 1px solid #eee;
+  border-bottom-color: #ccc;
+  margin-bottom: 5px;
+  border-radius: 6px;
+  min-height: 20px;
+}
+
+.hidden {
+  display: none;
+  /* TODO: some fancy transition */
+}
