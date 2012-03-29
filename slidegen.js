@@ -137,6 +137,29 @@ app.get('/:resource', function(req, res){
   res.sendfile(resourcePath);
 });
 
+// PUT /slides/slugid.json
+//  the contents of slides.json with new/updated slide
+app.put('/slides/:slug.json', function(req, res){
+  var slugid = req.params.slug;
+  var resourcePath = fs.realpathSync(root + '/slides.json');
+  console.log("got put data: ", typeof req.body, req.body);
+  fs.readFile(resourcePath, function(error, str){
+    if(error) res.end(500, error);
+
+    var fileData = JSON.parse(str);
+    fileData[slugid] = 'string' == typeof req.body ? JSON.parse(req.body) : req.body;
+
+    fs.writeFile(resourcePath, JSON.stringify(fileData, null, 2), function(error){
+      if(error) res.end(500, error);
+      else {
+        console.log(resourcePath + " saved");
+        res.send({ status: 'ok', 'message': 'updated '+resourcePath });
+      }
+    });
+
+  });
+});
+
 // POST /slides.json
 //    update the contents of slides.json
 app.post('/slides.json', function(req, res){
