@@ -32,9 +32,9 @@ var mixin = function(o1){
   return o1;
 };
     
-var mustache = require('mu2');
-// configure directory to find mustache templates
-mustache.root = __dirname;
+var mustache = require('mustache');
+// // configure directory to find mustache templates
+// mustache.root = __dirname;
 
 var app = express.createServer();
 var root = __dirname;
@@ -60,9 +60,9 @@ app.get('/', function(req, res, next){
     
     slides.sort(function(a,b){
       if(a.y == b.y) {
-        return a.x > b.x ? 1 : -1;
+        return a.x - b.x;
       } else {
-        return a.y > b.y ? 1 : -1;
+        return a.y - b.y;
       }
     });
     
@@ -75,10 +75,16 @@ app.get('/', function(req, res, next){
         return slide;
       })
     });
-    
-    var stream = mustache.compileAndRender('slides.tmpl', view);
 
-    util.pump(stream, res);
+    fs.readFile('./slides.tmpl', function(err, tmpl){
+      if(err) res.send(500);
+      else {
+        tmpl = tmpl.toString();
+        var responseText = mustache.render(tmpl, view);    
+        res.send(responseText);
+      }
+    });
+    
   });
   
 });
