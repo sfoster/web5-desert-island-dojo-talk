@@ -1,20 +1,114 @@
 {
-  "slugid": {
-    "x": 0,
-    "y": 0,
-    "title": "The Title",
-    "body": "Some [markdown formatted content](http://daringfireball.net/projects/markdown/syntax) in here."
-  },
-  "the next": {
-    "x": 1,
-    "y": 0,
-    "title": "Next Title",
-    "body": "Some *more* [markdown formatted content](http://daringfireball.net/projects/markdown/syntax) in here."
-  },
-  "thirdly": {
-    "x": 1,
-    "y": 1,
-    "title": "3rd Title",
-    "body": "Some *more* [markdown formatted content](http://daringfireball.net/projects/markdown/syntax) in here."
-  }
+    "aboutme": {
+        "body": "Some *more* [markdown formatted content](http://daringfireball.net/projects/markdown/syntax) in here.", 
+        "id": "the next", 
+        "title": "About Me", 
+        "x": "1", 
+        "y": "0"
+    }, 
+    "adapter-registry": {
+        "body": "Adapter Registry\n", 
+        "id": "adapter-registry", 
+        "title": "adapter-registry", 
+        "x": "0", 
+        "y": "3"
+    }, 
+    "attachpoint": {
+        "body": "Binding between DOM and object properties", 
+        "id": "attachpoint", 
+        "title": "attachPoint", 
+        "x": "0", 
+        "y": "10"
+    }, 
+    "data-dojo": {
+        "body": "* data-dojo-type\n* data-dojo-config\n\n* Declarative UI\n* In-place configuration", 
+        "id": "data-dojo", 
+        "title": "data-dojo*", 
+        "x": "0", 
+        "y": "9"
+    }, 
+    "desert-island-books": {
+        "body": "", 
+        "id": "desert-island-books", 
+        "title": "My Desert Island Book", 
+        "x": "0", 
+        "y": "12"
+    }, 
+    "desert-island-luxury": {
+        "body": "", 
+        "id": "desert-island-luxury", 
+        "title": "Desert Island Luxury", 
+        "x": "0", 
+        "y": "13"
+    }, 
+    "disk1": {
+        "body": "developing at any scale needs modules: dojo.require, dojo.provide / require/define", 
+        "id": "disk1", 
+        "title": "Modules", 
+        "x": "0", 
+        "y": "1"
+    }, 
+    "doh": {
+        "body": "Woohoo\n\n", 
+        "id": "doh", 
+        "title": "DOH", 
+        "x": "0", 
+        "y": "5"
+    }, 
+    "dojo-cla": {
+        "body": "Dojo Foundation owns copyright of all Dojo Toolkit contributions\n\nUnambiguous intellectual property ownership\n", 
+        "id": "dojo-cla", 
+        "title": "Dojo CLA", 
+        "x": "0", 
+        "y": "11"
+    }, 
+    "dojo-data": {
+        "body": "Consistent, ubiquitous interface to data\n\nRead: fetch, getValue\nIdentity: record.getIdentity, store.getItemById\nWrite: setValue, save\n\n", 
+        "id": "dojo-data", 
+        "title": "dojo.data, dojo.store", 
+        "x": "0", 
+        "y": "6"
+    }, 
+    "dojox-json": {
+        "body": "JSON utilities: \n\n* JSON References, \n* JSON Schema\n* JSON Date", 
+        "id": "dojox-json", 
+        "title": "dojox.json", 
+        "x": "0", 
+        "y": "8"
+    }, 
+    "frontmatter": {
+        "body": "Some [markdown formatted content](http://daringfireball.net/projects/markdown/syntax) in here.", 
+        "id": "slugid", 
+        "title": "Desert Island Disks with Dojo", 
+        "x": "0", 
+        "y": "0"
+    }, 
+    "hitch": {
+        "body": "dojo.hitch", 
+        "id": "hitch", 
+        "title": "Hitch", 
+        "x": "0", 
+        "y": "2"
+    }, 
+    "promises": {
+        "body": "Increasing adoption, notably in jQuery. \n\nDo something then do something else\nWhen something is done, do this other thing\n", 
+        "id": "promises", 
+        "title": "Promises", 
+        "x": "0", 
+        "y": "7"
+    }, 
+    "roadmap": {
+        "body": "Some *more* [markdown formatted content](http://daringfireball.net/projects/markdown/syntax) in here.", 
+        "id": "roadmap", 
+        "title": "Personal Roadmap", 
+        "x": "2", 
+        "y": "0"
+    }, 
+    "xhr-plugins": {
+        "body": "A registry of adapters to intercept XHR requests and decorate, re-route and or mock the request\n\n* Used for cross-origin requests, to add CORS headers or pick a JSON-P transport\n\n* decorate requests needing some auth token\n\n* Mock requests in unit tests\n\n* Normalize responses from different service end-points\n", 
+        "id": "xhr-plugins", 
+        "title": "xhr plugins ", 
+        "x": "0", 
+        "y": "4"
+    }
 }
