@@ -6,12 +6,10 @@ define([
 
   var mapNode = null;
   var tileSize = 50, 
-      worldSize = { width: 8, height: 8},
+      worldSize = { width: 8, height: 18},
       slidesByCoords = {};
   var currentSlide = null;
   var currentTool = "editdetail";
-  
-  window.slidesByCoords = slidesByCoords;
   
   function nextId(){
     return 'slide_' + (++nextId.count);
@@ -28,13 +26,6 @@ define([
     return o1;
   };
 
-  Object.keys(slidesById).forEach(function(id){
-    var slide = slidesById[id], 
-        xy = [slide.x, slide.y].join(',');
-    slidesByCoords[xy] = slide;
-    slidesByCoords[xy].id = id;
-  });
-  
   function drawSlidesMap(canvasNode){
     Object.keys(slidesById).forEach(function(id, idx){
       var slide = slidesById[id];
@@ -43,7 +34,7 @@ define([
           y = slide.y * tileSize;
       var ctx = canvasNode.getContext('2d'); 
       
-      ctx.fillStyle = 'rgba(248,248,248,0.95)';
+      ctx.fillStyle = 'rgba(0,153,0,0.95)';
       console.log("Drawing tile at: ", tileSize*slide.x+1, tileSize*slide.y+1);
       ctx.fillRect(tileSize*slide.x+1, tileSize*slide.y+1, tileSize-2, tileSize-2);
 
@@ -198,9 +189,9 @@ define([
     $('#gridOverlay').mousemove(function(event){
       var x = Math.floor(event.clientX/tileSize), 
           y = Math.floor(event.clientY/tileSize),
-          xy = x+''+y;
+          xy = x+','+y;
       var slide = slidesByCoords[xy] || { x: x, y: y, title: "Untitled", body: "--No content--" };
-
+      
       $("#tooltip").css({
         top: event.clientY+10, 
         left: event.clientX+10 
@@ -250,13 +241,19 @@ define([
   }
 
   function refresh(){
+    window.slidesByCoords = slidesByCoords;
+    Object.keys(slidesById).forEach(function(id){
+      var slide = slidesById[id], 
+          xy = [slide.x, slide.y].join(',');
+      slidesByCoords[xy] = slide;
+      slidesByCoords[xy].id = id;
+    });
     drawSlidesMap( $('#grid')[0] );
     setupSlideSequence();
   }
   function init(){
     editorInit();
-    drawSlidesMap( $('#grid')[0] );
-    setupSlideSequence();
+    refresh();
   }
 
   function trim(text){
