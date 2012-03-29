@@ -13,6 +13,11 @@ define([
   
   window.slidesByCoords = slidesByCoords;
   
+  function nextId(){
+    return 'slide_' + (++nextId.count);
+  }
+  nextId.count = 0;
+  
   var mixin = function(o1){
     var args = Array.prototype.slice.call(arguments, 1);
     args.forEach(function(o){
@@ -51,23 +56,23 @@ define([
     });
   }
   
-  function save() {
-    // Persist the current slides object
-
+  function saveSlide(slide) {
+    // Persist a slide
+    var url = '/slides/'+slide.id+'.json';
+    slidesById[slide.id] = slide;
     var savePromise = new Promise();
     $.ajax({
       type: 'PUT',
       dataType: 'json',
       contentType: 'application/json',
-      url: '/slides.json',
-      data: JSON.stringify(slidesById),
+      url: url,
+      data: JSON.stringify(slide),
       success: function(resp){
         console.log("save response: ", resp);
-        alert("slide.json saved: "+ resp.status);
         savePromise.resolve(resp.status);
       }, 
       error: function(xhr){ 
-        console.warn("error saving slides.json: ", xhr.status);
+        console.warn("error saving: " + url, xhr.status);
         alert("Unable to save slides right now"); 
         savePromise.reject(xhr.status);
       }
@@ -101,7 +106,9 @@ define([
     var $detailContainer = $('#detail'), 
         $detail = $('#detailContent');
     
-    var defaults = {};
+    var defaults = {
+      id: nextId()
+    };
     console.log("defaults: ", defaults);
     
     // if(slide.body.match(/^--/)){
@@ -113,15 +120,40 @@ define([
     $detail.html( tmpl( slide ) );
   }
   
-  function listUpdate(){
+  function setupSlideSequence(){
     $list = $('#slidelist');
-    $list.delegate('li', 'dragstart', function(e){
-      console.log("drag start: ", e.currentTarget.innerHTML);
-    });
+    var drug = null;
+    console.log("Setup setupSlideSequence dnd, on: ", $('li').length); // $list[0]
+    $list.delegate(
+      'li', 'dragstart', function(e){
+        drug = e.currentTarget;
+        console.log("drag start: ", e.currentTarget.innerHTML);
+      }
+    );
+    $list.delegate(
+      'li', 'dragover', function(e){
+        console.log("drag dragover: ", e.currentTarget.innerHTML);
+      }
+    );
+    // 
+    // .on('dragenter', 'li', )
+    // .on('drop', function(e){
+    //   console.log("Drop: ", e);
+    //   drug = null;
+    // });
+    
+    // $list.on('dragexit dragleave', function(e){
+    //   console.log("cancel drag: ", e);
+    //   drug = null;
+    // });
+      
     Object.keys(slidesById).forEach(function(id, idx){
       var slide = slidesById[id];
       var slideNo = 1+idx;
-      $list.append('<li draggable="true">' + slideNo + ': ' + slide.title + '</li>');
+      
+      
+      $('<li draggable="true">' + slideNo + ': ' + slide.title + '</li>')
+        .appendTo($list);
     });
   }
   
@@ -176,24 +208,55 @@ define([
     });
     
     $("#detail").delegate(".savebtn", "click", function() {
-      console.log("savebtn clicked");
+      
       var formNode = $('#detail'); 
-      var update = {
-        id: $('#id_value', formNode).val(),
-        title: $('#title_text', formNode).val(),
-        body: $('#body_text', formNode).val()
-      };
-      console.log("slide content: ", update);
+      var id = $('#id_value', formNode).val() || $('#title_text', formNode).val().toLowerCase().replace(/\W+/g, '-');
+      var slide = slidesById[id] || {};
+      
+      $('input[name], textarea[name]', formNode).each(function(idx, node){
+        console.log("each node: ", node);
+        slide[node.name] = $(node).val();
+      });
+
+      saveSlide(slide).then(function(resp){
+        alert("great, that went well");
+        console.log("save success: ", resp);
+        hideDetail();
+        refresh();
+      }, function(err){
+        alert("ugh, failed to save");
+        console.log("save error: ", err);
+      });
+      
+      // 
+      // $.ajax({
+      //   url: '/slides/'+update.id+'.json',
+      //   dataType: 'json',
+      //   data: update,
+      //   contentType: 'application/json',
+      //   success: function(resp){
+      //     alert( resp );
+      //     hideDetail();
+      //   },
+      //   error: function(err) {
+      //     alert( err );
+      //   }
+      // });
+      console.log("slide content: ", slide);
     });
     $("#detail").delegate(".cancelbtn", "click", function() {
       cancelDetailEdit();
     });
   }
 
+  function refresh(){
+    drawSlidesMap( $('#grid')[0] );
+    setupSlideSequence();
+  }
   function init(){
     editorInit();
     drawSlidesMap( $('#grid')[0] );
-    listUpdate();
+    setupSlideSequence();
   }
 
   function trim(text){

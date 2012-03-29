@@ -104,7 +104,9 @@
           <span class="imgblock"></span>
         </div>
         <div class="bd field-{id}">
-          <input type="hidden" id="id_value" name="coords" value="{id}"/>
+          <input type="hidden" id="id_value" name="id" value="{id}"/>
+          <input type="text" id="x_value" name="x" value="{x}" style="width: 2em"/>
+          <input type="text" id="y_value" name="y" value="{y}" style="width: 2em"/>
           <div class="field-description">
             <h3 class="caption"><label for="">Slided Title</label></h3>
             <p><textarea name="title" id="title_text" class="fullwidth shortheight">{title}</textarea></p>
@@ -122,12 +124,14 @@
     </script>
   </section>  
 
-<script src="resources/vendor/require.js"></script>
+  <script src="resources/vendor/require.js"></script>
+  <script src="resources/vendor/jquery-1.7.2.js"></script>
 <script>
   require({
     baseUrl: './resources',
     paths: {
-      '$': 'vendor/zepto',
+      '$': 'dollar',
+      'use': 'plugins/use',
       'json': 'plugins/json',
       'text': 'plugins/text'
     }
