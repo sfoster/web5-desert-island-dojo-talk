@@ -51,7 +51,10 @@ app.configure(function(){
 app.get('/', function(req, res, next){
   
   fs.readFile(root + '/slides.json', function(error, str){
-    if(error) res.end(500, error);
+    if(error) {
+      console.warn("get /: error reading slides.json: ", error);
+      res.end(500, error);
+    }
     var fileData = JSON.parse(str);
     var slides = [];
     Object.keys(fileData).forEach(function(id){
@@ -77,8 +80,11 @@ app.get('/', function(req, res, next){
     });
 
     fs.readFile('./slides.tmpl', function(err, tmpl){
-      if(err) res.send(500);
-      else {
+      if(error) {
+        console.warn("error reading template file: ", err);
+        res.end(500, error);
+      } else {
+        console.log("got template: ", tmpl);
         tmpl = tmpl.toString();
         var responseText = mustache.render(tmpl, view);    
         res.send(responseText);
@@ -94,13 +100,17 @@ app.get('/', function(req, res, next){
 app.get('/slides/:slug.json', function(req, res){
   var slugid = req.params.slug;
   fs.readFile(root + '/slides.json', function(error, str){
-    if(error) res.end(500, error);
-    var fileData = JSON.parse(str);
-    var slide = fileData[slugid];
-    if(slide) {
-      res.send( JSON.stringify( slide, null, 2) );
+    if(error) {
+      console.warn("error reading slides.json file: ", err);
+      res.end(500, error);
     } else {
-      res.send(404);
+      var fileData = JSON.parse(str);
+      var slide = fileData[slugid];
+      if(slide) {
+        res.send( JSON.stringify( slide, null, 2) );
+      } else {
+        res.send(404);
+      }
     }
   });
 });
@@ -150,7 +160,10 @@ app.put('/slides/:slug.json', function(req, res){
   var resourcePath = fs.realpathSync(root + '/slides.json');
   console.log("got put data: ", typeof req.body, req.body);
   fs.readFile(resourcePath, function(error, str){
-    if(error) res.end(500, error);
+    if(error) {
+      console.warn("error reading template file: ", err);
+      res.end(500, error);
+    }
 
     var fileData = JSON.parse(str);
     fileData[slugid] = 'string' == typeof req.body ? JSON.parse(req.body) : req.body;
