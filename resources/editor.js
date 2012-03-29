@@ -113,38 +113,23 @@ define([
   
   function setupSlideSequence(){
     $list = $('#slidelist');
-    var drug = null;
-    console.log("Setup setupSlideSequence dnd, on: ", $('li').length); // $list[0]
-    $list.delegate(
-      'li', 'dragstart', function(e){
-        drug = e.currentTarget;
-        console.log("drag start: ", e.currentTarget.innerHTML);
-      }
-    );
-    $list.delegate(
-      'li', 'dragover', function(e){
-        console.log("drag dragover: ", e.currentTarget.innerHTML);
-      }
-    );
-    // 
-    // .on('dragenter', 'li', )
-    // .on('drop', function(e){
-    //   console.log("Drop: ", e);
-    //   drug = null;
-    // });
-    
-    // $list.on('dragexit dragleave', function(e){
-    //   console.log("cancel drag: ", e);
-    //   drug = null;
-    // });
       
+    var slides = [];
     Object.keys(slidesById).forEach(function(id, idx){
-      var slide = slidesById[id];
-      var slideNo = 1+idx;
-      
-      
-      $('<li draggable="true">' + slideNo + ': ' + slide.title + '</li>')
-        .appendTo($list);
+      slides.push(slidesById[id]);
+    });
+    slides.sort(function(a,b){
+      if(a.y == b.y) {
+        return a.x - b.x;
+      } else {
+        return a.y - b.y;
+      }
+    });
+    
+    slides.forEach(function(slide, idx) {
+        var slideNo = 1+idx;
+        $('<li>' + slideNo + ': ' + slide.title + '</li>')
+          .appendTo($list);
     });
   }
   
