@@ -2,14 +2,14 @@ var fs = require("fs"),
     util = require("util"),
     path = require('path'),
     express = require("express"),
-    md = require("node-markdown").Markdown;
+    marked = require("marked");
 
 // limit HTML tags and keep attributes for allowed tags
-var allowedTags = 'a|img|p|span|b|strong|em|cite|address', 
+var allowedTags = 'a|img|p|span|b|strong|em|cite|address|textarea', 
     allowedAttributes = {
         'a':'href',
         'img': 'src',
-        '*': 'title'
+        '*': 'title|class'
     };
 
 var meta = {
@@ -18,9 +18,15 @@ var meta = {
   title: "My Talk"
 };
 
+marked.setOptions({
+  gfm: true,
+  pedantic: false,
+  sanitize: false
+});  
+
 // convenience for normal markdown handling
 var mdParse = function(mdtext){
-  return md(mdtext, true, allowedTags);
+  return marked(mdtext);
 };
 var mixin = function(o1){
   var args = Array.prototype.slice.call(arguments, 1);
