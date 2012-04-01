@@ -8,6 +8,7 @@
     
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
     <link href="resources/impress.js/css/impress-demo.css" rel="stylesheet" />
+    <link rel="stylesheet" href="resources/vendor/ace/demo/kitchen-sink/styles.css" type="text/css" media="screen" title="no title" charset="utf-8">
     
     <link rel="shortcut icon" href="resources/impress.js/favicon.png" />
     <link rel="apple-touch-icon" href="resources/impress.js/apple-touch-icon.png" />
@@ -53,7 +54,13 @@
 </div>
 
 <script src="resources/impress.js/js/impress.js"></script>
-<script>impress();</script>
+<script src="resources/vendor/jquery-1.7.2.js"></script>
+<script src="resources/vendor/ace/demo/kitchen-sink/kitchen-sink-uncompressed.js" type="text/javascript" charset="utf-8"></script>
+<script>
+  $(document).load(function(){
+    impress();    
+  });
+</script>
 
 </body>
 </html>
