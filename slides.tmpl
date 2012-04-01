@@ -8,7 +8,7 @@
     
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
     <link href="resources/impress.js/css/impress-demo.css" rel="stylesheet" />
-    <link rel="stylesheet" href="resources/vendor/ace/demo/kitchen-sink/styles.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="resources/vendor/ace/css/editor.css" type="text/css" media="screen" title="no title" charset="utf-8">
     
     <link rel="shortcut icon" href="resources/impress.js/favicon.png" />
     <link rel="apple-touch-icon" href="resources/impress.js/apple-touch-icon.png" />
@@ -21,6 +21,9 @@
       }
       #impress li {
         padding-bottom: 0.5em;
+      }
+      pre > code{
+        border:2px dotted blue;
       }
     </style>
 </head>
@@ -55,7 +58,24 @@
 
 <script src="resources/impress.js/js/impress.js"></script>
 <script src="resources/vendor/jquery-1.7.2.js"></script>
-<script src="resources/vendor/ace/demo/kitchen-sink/kitchen-sink-uncompressed.js" type="text/javascript" charset="utf-8"></script>
+<script src="resources/vendor/require.js"></script>
+<script>
+  require({
+    baseUrl: './resources',
+    paths: {
+      '$': 'dollar',
+      'use': 'plugins/use',
+      'json': 'plugins/json',
+      'text': 'plugins/text',
+      'ace': 'vendor/ace'
+    }
+  }, ['ace/ace'], function(ace){
+    impress();
+    var ta = $('textarea.codesample');
+    // var editor = ace.edit(ta[0]);
+  });
+</script>  
+
 <script>
   $(document).load(function(){
     impress();    

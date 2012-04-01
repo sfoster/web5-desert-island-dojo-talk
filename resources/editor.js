@@ -1,7 +1,7 @@
 define([
-  '$', 'template', 'Promise', 'json!/slides.json'
+  '$', 'template', 'Promise', 'ace/ace', 'json!/slides.json'
 ], function(
-  $, template, Promise, slidesById
+  $, template, Promise, ace, slidesById
 ){
 
   var mapNode = null;
@@ -39,7 +39,16 @@ define([
     return node;
   }
   
-  var editor = {};
+  var editor = {
+    slidePrototype: {
+      "body": "",
+      "id": "",
+      "title": "",
+      "x": "",
+      "y": ""
+    },
+    fields: {}
+  };
 
   editor.drawSlidesMap = function(canvasNode){
     Object.keys(slidesById).forEach(function(id, idx){
@@ -102,10 +111,17 @@ define([
     currentSlide = null;
   }
   
-
+  editor.initSlideEditor = function(){
+    var aceEdit = editor.aceEditor = ace.edit('body_editor');
+    aceEdit.getSession().on('change', function(evt){
+      $('#body_text').val( aceEdit.getSession().getValue() );
+    });
+  };
+  
   editor.editDetail = function(slide){
     console.log("editDetail: ", slide);
-
+    var aceEditor = editor.aceEditor; 
+    
     showDetail();
     
     var tmpl= template( $('#detail-template')[0].innerHTML );
@@ -119,6 +135,8 @@ define([
     slide = mixin(defaults, slide);
     console.log("Slide: ", slide);
     $detail.html( tmpl( slide ) );
+
+    editor.aceEditor.getSession().setValue(slide.body);
   };
   
   editor.setupSlideSequence = function(listNode){
@@ -200,10 +218,8 @@ define([
       var slide = slidesById[id] || {};
       
       $('input[name], textarea[name]', formNode).each(function(idx, node){
-        console.log("each node: ", node);
-        slide[node.name] = $(node).val();
+          slide[node.name] = $(node).val();
       });
-
       saveSlide(slide).then(function(resp){
         console.log("save success: ", resp);
         alert("great, that went well");
@@ -235,10 +251,11 @@ define([
   
   function init(){
     editor.layoutEditorInit();
+    editor.initSlideEditor();
     editor.refresh();
   }
 
-   editor.toolAction = function(x, y, currentTool){
+  editor.toolAction = function(x, y, currentTool){
     var xy = [x, y].join(','), 
         slide = slidesByCoords[xy] || { x: x, y: y, title: "Untitled", body: "--No content--" };
         
@@ -259,6 +276,9 @@ define([
     }
   };
   
-  init();
+  $(window).load(function(){
+
+    init();
+  });
   return editor;
 });
