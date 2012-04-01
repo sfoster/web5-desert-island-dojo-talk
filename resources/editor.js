@@ -6,7 +6,7 @@ define([
 
   var mapNode = null;
   var tileSize = 50, 
-      worldSize = { width: 8, height: 18},
+      worldSize = { width: 8, height: 18 },
       slidesByCoords = {};
   var currentSlide = null;
   var currentTool = "editdetail";
@@ -26,7 +26,22 @@ define([
     return o1;
   };
 
-  function drawSlidesMap(canvasNode){
+  function trim(text){
+    return text.replace(/^\s+/, '').replace(/\s+$/, '');
+  }
+
+  function nodeById(id){
+    var node; 
+    if('string' == typeof id){
+      id = id.replace(/^#/,'');
+      node = document.getElementById(id);
+    } else node = id; 
+    return node;
+  }
+  
+  var editor = {};
+
+  editor.drawSlidesMap = function(canvasNode){
     Object.keys(slidesById).forEach(function(id, idx){
       var slide = slidesById[id];
       var slideNo = 1+idx;
@@ -45,7 +60,7 @@ define([
       ctx.font = 'normal 9px sans-serif';
       ctx.fillText( slideNo, tileSize*slide.x+1, tileSize*slide.y+1 );
     });
-  }
+  };
   
   function saveSlide(slide) {
     // Persist a slide
@@ -88,7 +103,7 @@ define([
   }
   
 
-  function editDetail(slide){
+  editor.editDetail = function(slide){
     console.log("editDetail: ", slide);
 
     showDetail();
@@ -100,19 +115,14 @@ define([
     var defaults = {
       id: nextId()
     };
-    console.log("defaults: ", defaults);
     
-    // if(slide.body.match(/^--/)){
-    //   delete slide.body;
-    // }
-
     slide = mixin(defaults, slide);
     console.log("Slide: ", slide);
     $detail.html( tmpl( slide ) );
-  }
+  };
   
-  function setupSlideSequence(){
-    $list = $('#slidelist');
+  editor.setupSlideSequence = function(listNode){
+    $list = $(listNode);
       
     var slides = [];
     Object.keys(slidesById).forEach(function(id, idx){
@@ -131,10 +141,10 @@ define([
         $('<li>' + slideNo + ': ' + slide.title + '</li>')
           .appendTo($list);
     });
-  }
+  };
   
-  function editorInit(){
-    console.log("editorInit");
+  editor.layoutEditorInit = function(){
+    console.log("layoutEditorInit");
     $('#gridOverlay, #map').css({
       width: worldSize.width*tileSize,
       height: worldSize.height*tileSize,
@@ -161,7 +171,7 @@ define([
       console.log("click at: ", x, y, currentTool);
       if(!currentTool) return;
 
-      toolAction(x, y, currentTool);
+      editor.toolAction(x, y, currentTool);
     });
     $('#gridOverlay')
       .mouseover(function(event){
@@ -195,63 +205,46 @@ define([
       });
 
       saveSlide(slide).then(function(resp){
-        alert("great, that went well");
         console.log("save success: ", resp);
+        alert("great, that went well");
         hideDetail();
         refresh();
       }, function(err){
-        alert("ugh, failed to save");
         console.log("save error: ", err);
+        alert("ugh, failed to save");
       });
       
-      // 
-      // $.ajax({
-      //   url: '/slides/'+update.id+'.json',
-      //   dataType: 'json',
-      //   data: update,
-      //   contentType: 'application/json',
-      //   success: function(resp){
-      //     alert( resp );
-      //     hideDetail();
-      //   },
-      //   error: function(err) {
-      //     alert( err );
-      //   }
-      // });
       console.log("slide content: ", slide);
     });
     $("#detail").delegate(".cancelbtn", "click", function() {
       cancelDetailEdit();
     });
-  }
+  };
 
-  function refresh(){
-    window.slidesByCoords = slidesByCoords;
+  var refresh = editor.refresh = function(){
+    window.slidesByCoords = slidesByCoords; // just for debug
     Object.keys(slidesById).forEach(function(id){
       var slide = slidesById[id], 
           xy = [slide.x, slide.y].join(',');
       slidesByCoords[xy] = slide;
       slidesByCoords[xy].id = id;
     });
-    drawSlidesMap( $('#grid')[0] );
-    setupSlideSequence();
-  }
+    editor.drawSlidesMap( $('#grid')[0] );
+    editor.setupSlideSequence( $('#slidelist') );
+  };
+  
   function init(){
-    editorInit();
-    refresh();
+    editor.layoutEditorInit();
+    editor.refresh();
   }
 
-  function trim(text){
-    return text.replace(/^\s+/, '').replace(/\s+$/, '');
-  }
-
-  function toolAction(x, y, currentTool){
+   editor.toolAction = function(x, y, currentTool){
     var xy = [x, y].join(','), 
         slide = slidesByCoords[xy] || { x: x, y: y, title: "Untitled", body: "--No content--" };
         
     switch(currentTool){
       case "editdetail": 
-        editDetail(slide);
+        editor.editDetail(slide);
         break;
       case "delete": 
         if(confirm("Are you sure you want to delete: " + slide.title)){
@@ -264,45 +257,8 @@ define([
       default: 
         break;
     }
-  }
-  function placeTile(x, y, type){
-    var tileId = [x,y].join(','), 
-        tile = tilesByCoords[tileId];
-    if(!tile){
-      // create the tile object
-      tile = tilesByCoords[tileId] = {
-        x: x, y: y
-      };
-    }
-    tile.type = type;
-    
-    var img = tile.img = terrainTypes[type].img, 
-        ctx = mapNode.getContext('2d');
-
-    if(!img) {
-      console.log("no image?", tile, img);
-    }
-    ctx.clearRect(
-        tileSize*tile.x,        // dest-x
-        tileSize*tile.y,        // dest-y
-        tileSize,               // dest-width
-        tileSize                // dest-height
-    );
-    
-    if(img && type !== 'clear'){
-      ctx.drawImage(
-          img,                    // image
-          0,                      // source-x
-          0,                      // source-y
-          tileSize,              // source-width
-          tileSize,             // source-height
-          tileSize*tile.x,        // dest-x
-          tileSize*tile.y,        // dest-y
-          tileSize,               // dest-width
-          tileSize                // dest-height
-      );
-    }
-  }
-
+  };
+  
   init();
+  return editor;
 });
