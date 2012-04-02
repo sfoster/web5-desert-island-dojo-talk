@@ -1,10 +1,45 @@
 {
+  "frontmatter": {
+    "body": "Sam Foster, \nWeb Engineer, Mozilla.\n\n[@samfosteriam](http://twitter.com/samfosteriam)",
+    "id": "frontmatter",
+    "title": "Desert Island Disks with Dojo",
+    "x": "0",
+    "y": "0"
+  },
   "aboutme": {
-    "body": "Some *more* [markdown formatted content](http://daringfireball.net/projects/markdown/syntax) in here.",
-    "id": "the next",
+    "body": "* Developer on the Pancake project, Mozilla\n* Mostly Front-end\n* Recently working with: Backbone.js, require.js\n* Dojo contributor since ~2007\n",
+    "id": "aboutme",
     "title": "About Me",
     "x": "1",
     "y": "0"
+  },
+  "roadmap": {
+    "body": "* Level foundation \n* Language utils\n* Core APIs\n\n* Can open-source be proprietary?\n",
+    "id": "roadmap",
+    "title": "The Age of Libraries",
+    "x": "2",
+    "y": "0"
+  },
+  "disk1": {
+    "body": "Developing at any scale needs modules: \n\n* dojo.require\n* dojo.provide\n\nBetter known as: \n\n* require\n* define\n",
+    "id": "disk1",
+    "title": "Modules",
+    "x": "0",
+    "y": "1"
+  },
+  "slide_2": {
+    "id": "slide_2",
+    "x": "1",
+    "y": "2",
+    "body": "    var greet = dojo.hitch( me, 'greeting' );\n\n    greet(); // returns \"My name is Sam\"\n\nSimilar to Function.bind, _.bind etc. ",
+    "title": "Fixing 'this' with dojo.hitch"
+  },
+  "slide_9": {
+    "id": "slide_9",
+    "x": "1",
+    "y": "1",
+    "body": "Modules and packaging standards\n-------------------------------\n\n* Module scope\n* Module exports\n* Module Ids, Anonymous modules\n\nProduction builds\n-----------------\n\n* Concatenation\n* Minification\n* Optimization\n\n",
+    "title": "Modules"
   },
   "adapter-registry": {
     "body": "Replace a function with a registry of adapters\n\n* Adapter name\n* \"accepts\" function\n* Handler function \n",
@@ -41,13 +76,6 @@
     "x": "0",
     "y": "13"
   },
-  "disk1": {
-    "body": "Developing at any scale needs modules: \n\n* dojo.require\n* dojo.provide\n\nBetter known as: \n\n* require\n* define\n",
-    "id": "disk1",
-    "title": "Modules",
-    "x": "0",
-    "y": "1"
-  },
   "doh": {
     "body": "I love the Woohoo\n\n",
     "id": "doh",
@@ -76,13 +104,6 @@
     "x": "0",
     "y": "8"
   },
-  "frontmatter": {
-    "body": "Some [markdown formatted content](http://daringfireball.net/projects/markdown/syntax) in here.",
-    "id": "slugid",
-    "title": "Desert Island Disks with Dojo",
-    "x": "0",
-    "y": "0"
-  },
   "hitch": {
     "body": "    var me = {\n        name: \"Sam\",\n        greeting: function(){\n            return \"My name is: \" + this.name;\n        }\n    };\n    \n    var greet = me.greeting; \n    greet(); // returns \"My name is \" or whatever window.name is\n    ",
     "id": "hitch",
@@ -98,25 +119,11 @@
     "x": "0",
     "y": "7"
   },
-  "roadmap": {
-    "body": "Some *more* [markdown formatted content](http://daringfireball.net/projects/markdown/syntax) in here.",
-    "id": "roadmap",
-    "title": "Personal Roadmap",
-    "x": "2",
-    "y": "0"
-  },
   "xhr-plugins": {
     "body": "A registry of adapters to intercept XHR requests and decorate, re-route and or mock the request\n\n* Used for cross-origin requests, to add CORS headers or pick a JSON-P transport\n\n* decorate requests needing some auth token\n\n* Mock requests in unit tests\n\n* Normalize responses from different service end-points\n",
     "id": "xhr-plugins",
     "title": "xhr plugins ",
     "x": "0",
     "y": "4"
-  },
-  "slide_2": {
-    "id": "slide_2",
-    "x": "1",
-    "y": "2",
-    "body": "    var greet = dojo.hitch( me, 'greeting' );\n\n    greet(); // returns \"My name is Sam\"\n\nSimilar to Function.bind, _.bind etc. ",
-    "title": "Fixing 'this' with dojo.hitch"
   }
 }
