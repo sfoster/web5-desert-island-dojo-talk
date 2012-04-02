@@ -1,11 +1,29 @@
-/**
- * This is a stylesheet for a demo presentation for impress.js
- * 
- * It is not meant to be a part of impress.js and is not required by impress.js.
- * I expect that anyone creating a presentation for impress.js would create their own
- * set of styles.
- */
+.compact .slide-body {
+  font-size: 28px;
+}
+.medium .slide-body {
+  font-size: 36px;
+}
+.almost .slide-body {
+  font-size: 42px;
+}
 
+#frontmatter {
+  background: url('media/desert-island.png') no-repeat scroll center center;
+  width: 847px;
+  height: 567px;
+  -moz-transform: translate(-50%, -50%) translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1.25)!important;
+}
+#frontmatter h3 {
+  border: none;
+}
+
+#libraries .imgblock {
+  display: block;
+  background: url('media/book-of-monsters.png') no-repeat scroll top left;
+  width: 380px;
+  height: 380px;
+}
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
@@ -64,12 +82,12 @@ body {
     
     min-height: 740px;
 
-    background: rgb(215, 215, 215);
-    background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 500, from(rgb(240, 240, 240)), to(rgb(190, 190, 190)));
-    background: -webkit-radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-    background:    -moz-radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-    background:      -o-radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-    background:         radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
+    background: rgb(255, 255, 255);
+    background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 500, from(rgb(255, 255, 255)), to(rgb(190, 190, 190)));
+    background: -webkit-radial-gradient(rgb(255, 255, 255), rgb(212, 212, 212));
+    background:    -moz-radial-gradient(rgb(255, 255, 255), rgb(212, 212, 212));
+    background:      -o-radial-gradient(rgb(255, 255, 255), rgb(212, 212, 212));
+    background:         radial-gradient(rgb(255, 255, 255), rgb(212, 212, 212));
 
     -webkit-font-smoothing: antialiased;
 }
@@ -298,19 +316,33 @@ body     { pointer-events: none; }
 .step h3 {
   font-size: 1.8em;
   line-height: 1.1em;
-  border-bottom: 0.1em dotted #ccc;
+  border-bottom: 0.1em dotted #ddd;
+  padding-bottom: 0;
+  margin: 0.3em 0 0.3em 0;
+}
+.step h4 {
+  font-size: 0.8em;
+  line-height: 1.1em;
+  padding-bottom: 0;
+  color: #333;
+  text-transform: uppercase;
   margin: 0 0 0.3em 0;
 }
+
 .step p {
   margin: 0.3em 0 0.3em 0;
 }
 
+.slide-body ul {
+  margin: 0.3em 0 0.7em 0;
+}
 .slide-body li {
   margin: 0 0 0 0.7em;
   padding-left: 0.3em;
   list-style-type: disc;
   padding-bottom: 0.2em;
 }
+
 .slide-body pre {
   white-space: pre-wrap;                 /* CSS3 browsers  */
   white-space: -moz-pre-wrap !important; /* 1999+ Mozilla  */
@@ -319,10 +351,11 @@ body     { pointer-events: none; }
   word-wrap: break-word;                 /* IE 5.5+ and up */
   margin: 0 0 0.3em 0;
   line-height: 1em;
+}
+.slide-body pre > code, 
+.slide-body code {
+  color: #006;
+  font-family: "Courier New", courier, monospace;
   font-size: 0.8em;
   font-weight: bold;
-}
-.slide-body pre > code {
-  color: #030;
-  font-family: "Courier New", courier, monospace;
 }

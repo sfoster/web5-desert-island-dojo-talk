@@ -43,6 +43,7 @@ define([
     slidePrototype: {
       "body": "",
       "id": "",
+      "classes": "",
       "title": "",
       "x": "",
       "y": ""
