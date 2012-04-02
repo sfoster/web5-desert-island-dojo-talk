@@ -27,19 +27,27 @@
     "x": "0",
     "y": "1"
   },
+  "disk1-1": {
+    "id": "disk1-1",
+    "x": "1",
+    "y": "1",
+    "body": "Modules and packaging standards\n-------------------------------\n\n* Module scope\n* Module exports\n* Module Ids, Anonymous modules\n\nProduction builds\n-----------------\n\n* Concatenation\n* Minification\n* Optimization\n\n",
+    "title": "Modules"
+  },
+  "hitch": {
+    "body": "    var me = {\n        name: \"Sam\",\n        greeting: function(){\n            return \"My name is: \" + this.name;\n        }\n    };\n    \n    var greet = me.greeting; \n    greet(); // returns \"My name is \" or whatever window.name is\n    ",
+    "id": "hitch",
+    "title": "Hitch",
+    "scale": 1,
+    "x": "0",
+    "y": "2"
+  },
   "slide_2": {
     "id": "slide_2",
     "x": "1",
     "y": "2",
     "body": "    var greet = dojo.hitch( me, 'greeting' );\n\n    greet(); // returns \"My name is Sam\"\n\nSimilar to Function.bind, _.bind etc. ",
     "title": "Fixing 'this' with dojo.hitch"
-  },
-  "slide_9": {
-    "id": "slide_9",
-    "x": "1",
-    "y": "1",
-    "body": "Modules and packaging standards\n-------------------------------\n\n* Module scope\n* Module exports\n* Module Ids, Anonymous modules\n\nProduction builds\n-----------------\n\n* Concatenation\n* Minification\n* Optimization\n\n",
-    "title": "Modules"
   },
   "adapter-registry": {
     "body": "Replace a function with a registry of adapters\n\n* Adapter name\n* \"accepts\" function\n* Handler function \n",
@@ -48,12 +56,40 @@
     "x": "0",
     "y": "3"
   },
-  "attachpoint": {
-    "body": "Binding between DOM and object properties",
-    "id": "attachpoint",
-    "title": "attachPoint",
+  "xhr-plugins": {
+    "body": "A registry of adapters to intercept XHR requests and decorate, re-route and or mock the request\n\n* Used for cross-origin requests, to add CORS headers or pick a JSON-P transport\n\n* decorate requests needing some auth token\n\n* Mock requests in unit tests\n\n* Normalize responses from different service end-points\n",
+    "id": "xhr-plugins",
+    "title": "xhr plugins ",
     "x": "0",
-    "y": "10"
+    "y": "4"
+  },
+  "doh": {
+    "body": "I love the Woohoo\n\n",
+    "id": "doh",
+    "title": "DOH",
+    "x": "0",
+    "y": "5"
+  },
+  "dojo-data": {
+    "body": "Consistent, ubiquitous interface to data\n\nRead: fetch, getValue\nIdentity: record.getIdentity, store.getItemById\nWrite: setValue, save\n\n",
+    "id": "dojo-data",
+    "title": "dojo.data, dojo.store",
+    "x": "0",
+    "y": "6"
+  },
+  "promises": {
+    "body": "Increasing adoption, notably in jQuery. \n\nDo something then do something else\nWhen something is done, do this other thing\n",
+    "id": "promises",
+    "title": "Promises",
+    "x": "0",
+    "y": "7"
+  },
+  "dojox-json": {
+    "body": "JSON utilities: \n\n* JSON References, \n* JSON Schema\n* JSON Date",
+    "id": "dojox-json",
+    "title": "dojox.json",
+    "x": "0",
+    "y": "8"
   },
   "data-dojo": {
     "body": "* data-dojo-type\n* data-dojo-config\n\n* Declarative UI\n* In-place configuration",
@@ -61,6 +97,20 @@
     "title": "data-dojo*",
     "x": "0",
     "y": "9"
+  },
+  "attachpoint": {
+    "body": "Binding between DOM and object properties",
+    "id": "attachpoint",
+    "title": "attachPoint",
+    "x": "0",
+    "y": "10"
+  },
+  "dojo-cla": {
+    "body": "Dojo Foundation owns copyright of all Dojo Toolkit contributions\n\nUnambiguous intellectual property ownership\n",
+    "id": "dojo-cla",
+    "title": "Dojo CLA",
+    "x": "0",
+    "y": "11"
   },
   "desert-island-books": {
     "body": "",
@@ -75,55 +125,5 @@
     "title": "Desert Island Luxury",
     "x": "0",
     "y": "13"
-  },
-  "doh": {
-    "body": "I love the Woohoo\n\n",
-    "id": "doh",
-    "title": "DOH",
-    "x": "0",
-    "y": "5"
-  },
-  "dojo-cla": {
-    "body": "Dojo Foundation owns copyright of all Dojo Toolkit contributions\n\nUnambiguous intellectual property ownership\n",
-    "id": "dojo-cla",
-    "title": "Dojo CLA",
-    "x": "0",
-    "y": "11"
-  },
-  "dojo-data": {
-    "body": "Consistent, ubiquitous interface to data\n\nRead: fetch, getValue\nIdentity: record.getIdentity, store.getItemById\nWrite: setValue, save\n\n",
-    "id": "dojo-data",
-    "title": "dojo.data, dojo.store",
-    "x": "0",
-    "y": "6"
-  },
-  "dojox-json": {
-    "body": "JSON utilities: \n\n* JSON References, \n* JSON Schema\n* JSON Date",
-    "id": "dojox-json",
-    "title": "dojox.json",
-    "x": "0",
-    "y": "8"
-  },
-  "hitch": {
-    "body": "    var me = {\n        name: \"Sam\",\n        greeting: function(){\n            return \"My name is: \" + this.name;\n        }\n    };\n    \n    var greet = me.greeting; \n    greet(); // returns \"My name is \" or whatever window.name is\n    ",
-    "id": "hitch",
-    "title": "Hitch",
-    "scale": 1,
-    "x": "0",
-    "y": "2"
-  },
-  "promises": {
-    "body": "Increasing adoption, notably in jQuery. \n\nDo something then do something else\nWhen something is done, do this other thing\n",
-    "id": "promises",
-    "title": "Promises",
-    "x": "0",
-    "y": "7"
-  },
-  "xhr-plugins": {
-    "body": "A registry of adapters to intercept XHR requests and decorate, re-route and or mock the request\n\n* Used for cross-origin requests, to add CORS headers or pick a JSON-P transport\n\n* decorate requests needing some auth token\n\n* Mock requests in unit tests\n\n* Normalize responses from different service end-points\n",
-    "id": "xhr-plugins",
-    "title": "xhr plugins ",
-    "x": "0",
-    "y": "4"
   }
 }
