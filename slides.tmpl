@@ -24,13 +24,13 @@
     </div>
     
 {{#slides}}
-    <div class="step" data-x="{{x}}" data-y="{{y}}" {{#scale}}data-scale="{{scale}}"{{/scale}}>
+    <div id="{{id}}" class="step {{classes}}" data-x="{{x}}" data-y="{{y}}" {{#scale}}data-scale="{{scale}}"{{/scale}}>
+      <div class="slide-header"><h3>{{{title}}}</h3></div>
       <div class="media">
         <div class="img">
           <span class="imgblock"></span>
         </div>
         <div class="bd">
-          <div class="slide-header"><h3>{{{title}}}</h3></div>
           <div class="slide-body">{{{body}}}</div>
         </div>
       </div>
@@ -59,7 +59,16 @@
   }, ['ace/ace'], function(ace){
     impress();
     var ta = $('textarea.codesample');
-    // var editor = ace.edit(ta[0]);
+    $('#themesong-btn').on('click', function(evt){
+      var node = evt.target, isPlaying = $(node).hasClass('playing');
+       if(isPlaying){
+         $('#themesong-audio')[0].pause();
+         $(node).removeClass('playing');
+       } else {
+         $('#themesong-audio')[0].play();
+         $(node).addClass('playing');
+       }
+    });
   });
 </script>  
 

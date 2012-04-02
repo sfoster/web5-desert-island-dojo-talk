@@ -1,6 +1,6 @@
 {
   "frontmatter": {
-    "body": "Sam Foster, \nWeb Engineer, Mozilla.\n\n[@samfosteriam](http://twitter.com/samfosteriam)",
+    "body": "Sam Foster, \nWeb Engineer, Mozilla.\n\n[@samfosteriam](http://twitter.com/samfosteriam)\n\n<span class=\"play-btn\" id=\"themesong-btn\"></span><audio id=\"themesong-audio\" autobuffer autoloop loop><source src=\"./resources/media/Sleepy_Lagoon.mp3\" /><source src=\"./resources/media/Sleepy_Lagoon.ogg\" /></audio>\n",
     "id": "frontmatter",
     "title": "Desert Island Disks with Dojo",
     "x": "0",
@@ -11,27 +11,31 @@
     "id": "aboutme",
     "title": "About Me",
     "x": "1",
-    "y": "0"
+    "y": "0",
+    "classes": "medium"
   },
-  "roadmap": {
+  "libraries": {
     "body": "* Level foundation \n* Language utils\n* Core APIs\n\n* Can open-source be proprietary?\n",
-    "id": "roadmap",
+    "id": "libraries",
     "title": "The Age of Libraries",
     "x": "2",
-    "y": "0"
+    "y": "0",
+    "classes": "compact"
   },
-  "disk1": {
+  "modules": {
     "body": "Developing at any scale needs modules: \n\n* dojo.require\n* dojo.provide\n\nBetter known as: \n\n* require\n* define\n",
-    "id": "disk1",
+    "id": "modules",
     "title": "Modules",
     "x": "0",
-    "y": "1"
+    "y": "1",
+    "classes": "medium"
   },
-  "disk1-1": {
-    "id": "disk1-1",
+  "modules-1": {
+    "id": "modules-1",
     "x": "1",
     "y": "1",
-    "body": "Modules and packaging standards\n-------------------------------\n\n* Module scope\n* Module exports\n* Module Ids, Anonymous modules\n\nProduction builds\n-----------------\n\n* Concatenation\n* Minification\n* Optimization\n\n",
+    "body": "####Modules and packaging standards\n* Module scope\n* Module exports\n* Module Ids, Anonymous modules\n\n####Production builds\n\n* Concatenation\n* Minification\n* Optimization\n\n",
+    "classes": "medium",
     "title": "Modules"
   },
   "hitch": {
@@ -40,10 +44,11 @@
     "title": "Hitch",
     "scale": 1,
     "x": "0",
-    "y": "2"
+    "y": "2",
+    "classes": "medium"
   },
-  "slide_2": {
-    "id": "slide_2",
+  "hitch-1": {
+    "id": "hitch-1",
     "x": "1",
     "y": "2",
     "body": "    var greet = dojo.hitch( me, 'greeting' );\n\n    greet(); // returns \"My name is Sam\"\n\nSimilar to Function.bind, _.bind etc. ",
@@ -57,14 +62,21 @@
     "y": "3"
   },
   "xhr-plugins": {
-    "body": "A registry of adapters to intercept XHR requests and decorate, re-route and or mock the request\n\n* Used for cross-origin requests, to add CORS headers or pick a JSON-P transport\n\n* decorate requests needing some auth token\n\n* Mock requests in unit tests\n\n* Normalize responses from different service end-points\n",
+    "body": "A registry of adapters to intercept XHR requests and decorate, re-route and or mock the request",
     "id": "xhr-plugins",
     "title": "xhr plugins ",
     "x": "0",
     "y": "4"
   },
+  "xhr-plugins-1": {
+    "id": "xhr-plugins-1",
+    "x": "1",
+    "y": "4",
+    "body": "* Cross-origin requests, to add CORS headers or pick a JSON-P transport\n* decorate requests needing some auth token\n* Mock requests in unit tests\n* Normalize responses from different service end-points\n",
+    "title": "XHR Plugins Use Cases"
+  },
   "doh": {
-    "body": "I love the Woohoo\n\n",
+    "body": "* Async-friendly test runner\n* Includes \"robot\" for UI testing\n* AMD\n* Visual and audible feedback!\n\n",
     "id": "doh",
     "title": "DOH",
     "x": "0",
