@@ -1,12 +1,51 @@
-var fs = require('fs');
-var path = require('path');
-var assert = require('assert');
-var express = require('express');
+var fs = require("fs"), 
+    util = require("util"),
+    path = require('path'),
+    express = require("express"),
+    marked = require("marked");
+
+// limit HTML tags and keep attributes for allowed tags
+var allowedTags = 'a|img|p|span|b|strong|em|cite|address|textarea', 
+    allowedAttributes = {
+        'a':'href',
+        'img': 'src',
+        '*': 'title|class'
+    };
+
+var meta = {
+  slideHorizontalOffset: 1200,
+  slideVerticalOffset: 800,
+  title: "My Talk"
+};
+
+marked.setOptions({
+  gfm: true,
+  pedantic: false,
+  sanitize: false
+});  
+
+// convenience for normal markdown handling
+var mdParse = function(mdtext){
+  return marked(mdtext);
+};
+var mixin = function(o1){
+  var args = Array.prototype.slice.call(arguments, 1);
+  args.forEach(function(o){
+    for(var i in o){
+      o1[i] = o[i];
+    }
+  });
+  return o1;
+};
+    
+var mustache = require('mustache');
+// // configure directory to find mustache templates
+// mustache.root = __dirname;
+
 var app = express.createServer();
 var root = __dirname;
-var port = process.env.ROAMINGAPP_PORT || 3000;
-var datadir = process.env.ROAMINGAPP_DATADIR || path.resolve(root, '../data');
-console.log("datadir at: " + datadir);
+var port = process.env.SLIDEGEN_PORT || 3000;
+
 
 app.configure(function(){
     app.use(express.logger({ format: ':method :url' }));
@@ -16,135 +55,160 @@ app.configure(function(){
 });
 
 app.get('/', function(req, res, next){
-  res.sendfile(root + '/client/index.html');
-});
-
-app.get('/location/world.json', function(req, res){
-  var resourcePath = fs.realpathSync(datadir + '/location/world.json');
-  if(path.existsSync(resourcePath)){
-    fs.readFile(resourcePath, function(err, contents){
-      var data = JSON.parse(contents), 
-          resp = { tiles: data, status: 'ok' };
-      res.send( JSON.stringify(resp), { 'Content-Type': 'application/json' }, 200);
+  
+  fs.readFile(root + '/slides.json', function(error, str){
+    if(error) {
+      console.warn("get /: error reading slides.json: ", error);
+      res.end(500, error);
+    }
+    var fileData = JSON.parse(str);
+    var slides = [];
+    Object.keys(fileData).forEach(function(id){
+      slides.push(fileData[id]);
     });
-  } else {
-    console.log("sending empty tiles data for world.json");
-    res.send({ tiles: [] });
-  }
-});
-app.post('/location/world.json', function(req, res){
-  var resourcePath = fs.realpathSync(datadir + '/location/world.json');
-  console.log("got post: ", typeof req.body, req.body);
-  var fileData = req.body;
-  fileData.sort(function(a,b){
-    if(a.y == b.y) {
-      return a.x > b.x ? 1 : -1;
-    } else {
-      return a.y > b.y ? 1 : -1;
-    }
-  });
-  fs.writeFile(resourcePath, JSON.stringify(fileData, null, 2), function(err) {
-    if(err) {
-        console.log(err);
-        res.send(500);
-    } else {
-        res.send({ status: 'ok', 'message': 'updated '+resourcePath });
-        console.log(resourcePath + " saved");
-    }
-  });
-});
+    
+    slides.sort(function(a,b){
+      if(a.y == b.y) {
+        return a.x - b.x;
+      } else {
+        return a.y - b.y;
+      }
+    });
+    
+    var view = mixin(Object.create(meta), {
+      slides: slides.map(function(slide){
+        slide = Object.create(slide);
+        slide.body = mdParse(slide.body);
+        slide.x*=meta.slideHorizontalOffset;
+        slide.y*=meta.slideVerticalOffset;
+        return slide;
+      })
+    });
 
-app.get(/^\/(resources|models|vendor|css|plugins)\/(.*)$/, function(req, res){
-  var resourcePath;
-  // console.log("matched: ", req.params[0], req.params[1]);
-  switch(req.params[0]){
-    case 'resources': 
-      resourcePath = root + '/resources/' + req.params[1];
-      break;
-    case 'plugins': 
-      resourcePath = root + '/plugins/' + req.params[1];
-      break;
-    case 'vendor': 
-      resourcePath = root + '/vendor/' + req.params[1];
-      break;
-    case 'models': 
-      resourcePath = root + '/models/' + req.params[1];
-      break;
-    case 'css': 
-      resourcePath = root + '/client/css/' + req.params[1];
-      break;
-    default: 
-      break;
-  }
-  
-  resourcePath = fs.realpathSync(resourcePath);
-  
-  // console.log("resolved resourcePath: " + resourcePath);
-  if(resourcePath && path.existsSync(resourcePath)){
-    res.sendfile(resourcePath);
-  } else {
-    res.send(404);
-  }
-});
-
-app.get('/location/:id.json', function(req, res){
-  // handle data as static files for now
-  var id = req.params.id;
-  console.log("request for location id: " + id);
-
-  var relPath = 'location/' + id + '.json';
-  var resourcePath = datadir + '/' + relPath;
-
-  if( path.existsSync(resourcePath) ){
-    resourcePath = fs.realpathSync(resourcePath);
-    console.log(id + " exists");
-    res.sendfile( resourcePath );
-  } else {
-    console.log(id + " does not exist");
-    var emptyLocation = {
-      coords: id.split(','),
-      description: "--No description yet--",
-      afar: "--No afar description yet--",
-      here: {} 
-    };
-    res.send( JSON.stringify(emptyLocation) );
-  }
-});
-
-app.put('/location/:id.json', function(req, res){
-  var id = req.params.id;
-  var fileData = req.body;
-  assert(id);
-  assert(2 == id.split(',').length);
-  assert("string" == typeof fileData.description);
-
-  var relPath = 'location/' + id + '.json';
-  var resourcePath = datadir + '/' + relPath;
-
-  fs.writeFile(resourcePath, JSON.stringify(fileData, null, 2), function(err) {
-    if(err) {
-        console.log(err);
-        res.send(500);
-    } else {
-        res.send({ status: 'ok', 'message': 'updated '+resourcePath });
-        console.log(resourcePath + " saved");
-    }
+    fs.readFile('./slides.tmpl', function(err, tmpl){
+      if(error) {
+        console.warn("error reading template file: ", err);
+        res.end(500, error);
+      } else {
+        console.log("got template: ", tmpl);
+        tmpl = tmpl.toString();
+        var responseText = mustache.render(tmpl, view);    
+        res.send(responseText);
+      }
+    });
+    
   });
   
 });
 
-app.get('/data/*', function(req, res){
-  // handle data as static files for now
-  var relPath = req.params[0].replace(/^\.\//, '');
-  var resourcePath = fs.realpathSync(datadir + '/' + relPath);
-  res.sendfile( resourcePath );
+// GET /slides/{slug}.json
+//    return an individual slide object as JSON
+app.get('/slides/:slug.json', function(req, res){
+  var slugid = req.params.slug;
+  fs.readFile(root + '/slides.json', function(error, str){
+    if(error) {
+      console.warn("error reading slides.json file: ", err);
+      res.end(500, error);
+    } else {
+      var fileData = JSON.parse(str);
+      var slide = fileData[slugid];
+      if(slide) {
+        res.send( JSON.stringify( slide, null, 2) );
+      } else {
+        res.send(404);
+      }
+    }
+  });
 });
 
+// GET /slides/{slug}.markdown
+//    return the markdown body content only
+app.get('/slides/:slug.markdown', function(req, res){
+  var slugid = req.params.slug;
+  fs.readFile(root + '/slides.json', function(error, str){
+    var fileData = JSON.parse(str);
+    var slide = fileData[slugid];
+    if(slide) {
+      res.send(slide.body);
+    } else {
+      res.send(404);
+    }
+  });
+});
+
+// GET /slides/{slug}.html
+//    return the transformed markdown content only
+app.get('/slides/:slug.html', function(req, res){
+  var slugid = req.params.slug;
+  fs.readFile(root + '/slides.json', function(error, str){
+    var fileData = JSON.parse(str);
+    var slide = fileData[slugid];
+    if(slide) {
+      res.send( mdParse(slide.body) ) ;
+    } else {
+      res.send(404);
+    }
+  });
+});
+
+
+// GET /slides.json
+//    return the contents of slides.json
 app.get('/:resource', function(req, res){
-  var resourcePath = fs.realpathSync(root + '/client/' + req.params.resource);
+  var resourcePath = fs.realpathSync(root + '/' + req.params.resource);
   res.sendfile(resourcePath);
 });
 
+// PUT /slides/slugid.json
+//  the contents of slides.json with new/updated slide
+app.put('/slides/:slug.json', function(req, res){
+  var slugid = req.params.slug;
+  var resourcePath = fs.realpathSync(root + '/slides.json');
+  console.log("got put data: ", typeof req.body, req.body);
+  fs.readFile(resourcePath, function(error, str){
+    if(error) {
+      console.warn("error reading template file: ", err);
+      res.end(500, error);
+    }
+
+    var fileData = JSON.parse(str);
+    fileData[slugid] = 'string' == typeof req.body ? JSON.parse(req.body) : req.body;
+
+    fs.writeFile(resourcePath, JSON.stringify(fileData, null, 2), function(error){
+      if(error) res.end(500, error);
+      else {
+        console.log(resourcePath + " saved");
+        res.send({ status: 'ok', 'message': 'updated '+resourcePath });
+      }
+    });
+
+  });
+});
+
+// POST /slides.json
+//    update the contents of slides.json
+app.post('/slides.json', function(req, res){
+  var resourcePath = fs.realpathSync(root + '/slides.json');
+  console.log("got post: ", typeof req.body, req.body);
+  var fileData = req.body;
+  fs.writeFile(resourcePath, JSON.stringify(fileData, null, 2), function(err) {
+    if(err) {
+        console.log(err);
+        res.send(500);
+    } else {
+        res.send({ status: 'ok', 'message': 'updated '+resourcePath });
+        console.log(resourcePath + " saved");
+    }
+  });
+});
+
+// GET /slides.json
+//    return the contents of slides.json
+app.get('/resources/*', function(req, res){
+  console.log("static resource request: ", req.url, req.params);
+  var resourcePath = root + '/resources/' + req.params[0];
+  res.sendfile(resourcePath);
+});
 
 app.listen(port);
 console.log("listening on localhost:" + port);
