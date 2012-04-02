@@ -54,19 +54,17 @@ app.configure(function(){
     app.use(app.router);
 });
 
-app.get('/', function(req, res, next){
-  
-  fs.readFile(root + '/slides.json', function(error, str){
-    if(error) {
-      console.warn("get /: error reading slides.json: ", error);
-      res.end(500, error);
-    }
-    var fileData = JSON.parse(str);
-    var slides = [];
-    Object.keys(fileData).forEach(function(id){
-      slides.push(fileData[id]);
-    });
-    
+function values(map){
+  var arr = [];
+  Object.keys(map).forEach(function(id){
+    map[id].id = id;
+    arr.push(map[id]);
+  });
+  return arr;
+}
+
+function sortSlides(slides){
+  if(slides instanceof Array){
     slides.sort(function(a,b){
       if(a.y == b.y) {
         return a.x - b.x;
@@ -74,6 +72,26 @@ app.get('/', function(req, res, next){
         return a.y - b.y;
       }
     });
+    return slides;
+  } else {
+    var slideMap = slides; 
+    slides = sortSlides( values(slideMap) );
+    slideMap = {};
+    slides.forEach(function(slide){
+      slideMap[slide.id] = slide;
+    });
+    return slideMap;
+  }
+}
+app.get('/', function(req, res, next){
+  
+  fs.readFile(root + '/slides.json', function(error, str){
+    if(error) {
+      console.warn("get /: error reading slides.json: ", error);
+      res.end(500, error);
+    }
+    var fileData = sortSlides(JSON.parse(str)), 
+        slides = values(fileData);
     
     var view = mixin(Object.create(meta), {
       slides: slides.map(function(slide){
@@ -173,6 +191,7 @@ app.put('/slides/:slug.json', function(req, res){
 
     var fileData = JSON.parse(str);
     fileData[slugid] = 'string' == typeof req.body ? JSON.parse(req.body) : req.body;
+    fileData = sortSlides(fileData);
 
     fs.writeFile(resourcePath, JSON.stringify(fileData, null, 2), function(error){
       if(error) res.end(500, error);
@@ -190,7 +209,7 @@ app.put('/slides/:slug.json', function(req, res){
 app.post('/slides.json', function(req, res){
   var resourcePath = fs.realpathSync(root + '/slides.json');
   console.log("got post: ", typeof req.body, req.body);
-  var fileData = req.body;
+  var fileData = sortSlides(JSON.parse(req.body));
   fs.writeFile(resourcePath, JSON.stringify(fileData, null, 2), function(err) {
     if(err) {
         console.log(err);
