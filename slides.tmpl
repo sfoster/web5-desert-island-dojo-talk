@@ -7,25 +7,12 @@
     <title>{{title}}</title>
     
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
-    <link href="resources/impress.js/css/impress-demo.css" rel="stylesheet" />
+    <link href="resources/slides.css" rel="stylesheet" />
     <link rel="stylesheet" href="resources/vendor/ace/css/editor.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <link href="resources/style.css" rel="stylesheet" />
     
     <link rel="shortcut icon" href="resources/impress.js/favicon.png" />
     <link rel="apple-touch-icon" href="resources/impress.js/apple-touch-icon.png" />
-    <style>
-      #impress h2 {
-        font-size: 1.8em;
-        line-height: 2em;
-        border-bottom: 1px dotted #ccc;
-        margin: 0 0 1em 0;
-      }
-      #impress li {
-        padding-bottom: 0.5em;
-      }
-      pre > code{
-        border:2px dotted blue;
-      }
-    </style>
 </head>
 <body class="impress-not-supported">
 
@@ -37,7 +24,7 @@
     </div>
     
 {{#slides}}
-    <div class="step" data-x="{{x}}" data-y="{{y}}">
+    <div class="step" data-x="{{x}}" data-y="{{y}}" {{#scale}}data-scale="{{scale}}"{{/scale}}>
       <div class="media">
         <div class="img">
           <span class="imgblock"></span>
