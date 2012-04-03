@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Module Demo</title>
+  <style>
+    .npc {
+      width: 20px; height: 20px;
+      background: no-repeat 0 0;
+      -webkit-transform: scale(2);
+      -moz-transform:    scale(2);
+      -ms-transform:     scale(2);
+      -o-transform:      scale(2);
+      transform:         scale(2);
+    }
+    .coder {
+      background-image: url('../../resources/media/coder.png');
+    }
+  </style>
+</head>
+<body>
+  <h1>Module Demo</h1>
+  <h2>NPCs</h2>
+  <ul class="npc-list">
+    <li></li>
+  </ul>
+  <dl>
+    <dt></dt>
+    <dd class=></dd>
+  </dl>
+  <script src="../../resources/vendor/require.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+    require({
+      paths: {
+        $: '../dollar/dollar'
+      }
+    }, ['$', './Npc'], function($, Npc){
+
+      var coder = new Npc('coder');
+      $('.npc-list li').append( coder.render() );
+
+    });
+  </script>
+  
+</body>
+</html>
