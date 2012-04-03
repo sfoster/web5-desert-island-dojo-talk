@@ -228,6 +228,11 @@ app.get('/resources/*', function(req, res){
   var resourcePath = root + '/resources/' + req.params[0];
   res.sendfile(resourcePath);
 });
+app.get('/demos/*', function(req, res){
+  console.log("static resource request: ", req.url, req.params);
+  var resourcePath = root + '/demos/' + req.params[0];
+  res.sendfile(resourcePath);
+});
 
 app.listen(port);
 console.log("listening on localhost:" + port);
