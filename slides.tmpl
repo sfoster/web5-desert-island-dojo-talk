@@ -76,6 +76,15 @@
   $(document).load(function(){
     impress();    
   });
+  $(document.body).click(function(evt){
+    if(evt.target.tagName == 'A') {
+      evt.preventDefault();
+      // Change "_blank" to something like "newWindow" to load all links in the same new window
+      viewWindow = window.open(evt.target.href, 'viewer');
+      newWindow.focus();
+      return false;
+    }
+  });
 </script>
 
 </body>
