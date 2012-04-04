@@ -7,7 +7,7 @@
     "y": "0"
   },
   "aboutme": {
-    "body": "* Developer on the Pancake project, Mozilla\n* Mostly Front-end\n* Recently working with: Backbone.js, require.js\n* Dojo contributor since ~2007\n",
+    "body": "* Developer on the Pancake project, Mozilla\n* Mostly Front-end\n* Recently working with: Backbone.js, require.js\n* Dojo contributor since ~2007\n* <a href=\"http://leedsjs.org/\">LeedsJs</a>\n",
     "id": "aboutme",
     "title": "About Me",
     "x": "1",
@@ -57,14 +57,14 @@
   "adapter-registry": {
     "body": "Replace a function with a registry of adapters\n\n* Adapter name\n* \"accepts\" function\n* Handler function \n",
     "id": "adapter-registry",
-    "title": "adapter-registry",
+    "title": "AdapterRegistry",
     "x": "0",
     "y": "3"
   },
   "xhr-plugins": {
     "body": "A registry of adapters to intercept XHR requests and decorate, re-route and or mock the request",
     "id": "xhr-plugins",
-    "title": "xhr plugins ",
+    "title": "XHR Plugins ",
     "x": "1",
     "y": "3"
   },
