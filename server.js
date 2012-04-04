@@ -15,7 +15,7 @@ var allowedTags = 'a|img|p|span|b|strong|em|cite|address|textarea',
 var meta = {
   slideHorizontalOffset: 1200,
   slideVerticalOffset: 800,
-  title: "My Talk"
+  title: "Dojo Desert Island Disks"
 };
 
 marked.setOptions({
