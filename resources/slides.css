@@ -18,6 +18,11 @@
   border: none;
 }
 
+.example-link:before {
+  padding-right: 0.5em;
+  content: "☼";
+}
+
 .play-btn {
   display: inline-block;
   background: url('./media/play-pause.png') no-repeat;
