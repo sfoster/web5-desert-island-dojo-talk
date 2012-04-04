@@ -76,18 +76,26 @@
     "title": "XHR Plugins Use Cases"
   },
   "doh": {
-    "body": "* Async-friendly test runner\n* Includes \"robot\" for UI testing\n* AMD\n* Visual and audible feedback!\n\n",
+    "body": "* Async-friendly test runner\n* Includes \"robot\" for UI testing\n* AMD\n* Visual and audible feedback!\n\n<a class=\"example-link\" href=\"/resources/vendor/dojo-trunk/util/doh/runner.html?test=dojo/tests/_base/array\">doh runner</a>",
     "id": "doh",
     "title": "DOH",
     "x": "0",
     "y": "5"
   },
   "dojo-data": {
-    "body": "Consistent, ubiquitous interface to data\n\nRead: fetch, getValue\nIdentity: record.getIdentity, store.getItemById\nWrite: setValue, save\n\n",
+    "body": "Consistent, ubiquitous interface to data\n\n* get, query, getIdentity\n* remove, put, save\n* observe\n\n",
     "id": "dojo-data",
-    "title": "dojo.data, dojo.store",
+    "title": "dojo/store",
     "x": "0",
     "y": "6"
+  },
+  "store-example": {
+    "id": "store-example",
+    "x": "1",
+    "y": "6",
+    "body": "    var npcs = [\n      {name:\"coder\",  alive: true, sprite: 'coder.png' },\n      {name:\"deathknight\",  alive: true, sprite: 'deathknight.png' },\n      {name:\"crab\",  alive: true, sprite: 'crab.png' },\n      {name:\"goblin\",  alive: false, sprite: 'goblin.png' }\n    ];\n    var npcStore = new dojo.store.Memory({\n        data:npcs, idProperty: \"name\"\n    });\n    \n    npcStore.query({alive:true}).forEach(function(npc){\n        // this is called for each not-yet-dead npc\n        console.log(npc.sprite);\n    });",
+    "title": "Store example",
+    "classes": "compact"
   },
   "promises": {
     "body": "Increasing adoption, notably in jQuery. \n\nDo something then do something else\nWhen something is done, do this other thing\n",
@@ -99,9 +107,25 @@
   "dojox-json": {
     "body": "JSON utilities: \n\n* JSON References, \n* JSON Schema\n* JSON Date",
     "id": "dojox-json",
-    "title": "dojox.json",
+    "title": "dojox/json",
     "x": "0",
     "y": "8"
+  },
+  "json-refs": {
+    "id": "json-refs",
+    "x": "1",
+    "y": "8",
+    "body": "    {\n      \"x\": 0,\n      \"y\": 0,\n      \"type\": \"abyss\",\n      \"$ref\": \"/location/0,0.json\"\n    },\n",
+    "title": "JSON References",
+    "classes": "medium"
+  },
+  "json-schema": {
+    "id": "json-schema",
+    "x": "2",
+    "y": "8",
+    "body": "    {\n      \"description\":\"This is the JSON Schema for JSON Schemas.\",\n      \"type\":[ \"object\", \"array\" ],\n      \"items\":{\n        \"type\":\"object\",\n        \"properties\":{\n          \"$ref\":\"$.properties\"\n        },\n        \"description\":\"When the schema is an array, it indicates that it is enforcing tuple typing...\"\n      },\n      \"properties\":{\n        \"type\":{\n          \"type\":[ \"string\", \"array\" ],\n          \"items\":{\n            \"$ref\":\"$.properties.type\"\n          },\n    ...\n    }",
+    "title": "Schema Schema",
+    "classes": "compact"
   },
   "data-dojo": {
     "body": "* data-dojo-type\n* data-dojo-config\n\n* Declarative UI\n* In-place configuration",
@@ -125,16 +149,16 @@
     "y": "11"
   },
   "desert-island-books": {
-    "body": "",
+    "body": "* How do we consume libraries and toolkits\n* Granular, single-function modules\n* Pick-and-mix",
     "id": "desert-island-books",
-    "title": "My Desert Island Book",
+    "title": "What If?",
     "x": "0",
     "y": "12"
   },
   "desert-island-luxury": {
-    "body": "",
+    "body": "####I've been Sam Foster\n* <a href=\"http://twitter.com/samfosteriam\">@samfosteriam</a>\n\n####Slides on Github\n\n<a href=\"https://github.com/sfoster/web5-desert-island-dojo-talk\">github.com/sfoster/web5-desert-island-dojo-talk</a>\n",
     "id": "desert-island-luxury",
-    "title": "Desert Island Luxury",
+    "title": "Thank You",
     "x": "0",
     "y": "13"
   }
