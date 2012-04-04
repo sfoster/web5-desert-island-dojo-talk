@@ -15,7 +15,7 @@
     "classes": "medium"
   },
   "libraries": {
-    "body": "* Level foundation \n* Language utils\n* Core APIs\n\n* Can open-source be proprietary?\n",
+    "body": "* Level foundation \n* Language utils\n* Core APIs\n\n* Price of entry\n",
     "id": "libraries",
     "title": "The Age of Libraries",
     "x": "2",
@@ -65,15 +65,22 @@
     "body": "A registry of adapters to intercept XHR requests and decorate, re-route and or mock the request",
     "id": "xhr-plugins",
     "title": "xhr plugins ",
-    "x": "0",
-    "y": "4"
+    "x": "1",
+    "y": "3"
   },
   "xhr-plugins-1": {
     "id": "xhr-plugins-1",
-    "x": "1",
-    "y": "4",
+    "x": "2",
+    "y": "3",
     "body": "* Cross-origin requests, to add CORS headers or pick a JSON-P transport\n* decorate requests needing some auth token\n* Mock requests in unit tests\n* Normalize responses from different service end-points\n",
     "title": "XHR Plugins Use Cases"
+  },
+  "i18n": {
+    "body": "* Locale-specific bundles\n* i18n AMD plugin\n\n\n    require(['i18n!some/nls/bundle'], function(text){\n       // greets in your language\n       alert(text.greeting);\n    });",
+    "id": "i18n",
+    "title": "i18n",
+    "x": "0",
+    "y": "4"
   },
   "doh": {
     "body": "* Async-friendly test runner\n* Includes \"robot\" for UI testing\n* AMD\n* Visual and audible feedback!\n\n<a class=\"example-link\" href=\"/resources/vendor/dojo-trunk/util/doh/runner.html?test=dojo/tests/_base/array\">doh runner</a>",
@@ -93,16 +100,24 @@
     "id": "store-example",
     "x": "1",
     "y": "6",
-    "body": "    var npcs = [\n      {name:\"coder\",  alive: true, sprite: 'coder.png' },\n      {name:\"deathknight\",  alive: true, sprite: 'deathknight.png' },\n      {name:\"crab\",  alive: true, sprite: 'crab.png' },\n      {name:\"goblin\",  alive: false, sprite: 'goblin.png' }\n    ];\n    var npcStore = new dojo.store.Memory({\n        data:npcs, idProperty: \"name\"\n    });\n    \n    npcStore.query({alive:true}).forEach(function(npc){\n        // this is called for each not-yet-dead npc\n        console.log(npc.sprite);\n    });",
+    "body": "    var npcs = [\n      { nom:\"coder\", alive:true, sprite:'coder.png' },\n      { nom:\"deathknight\", alive:true, sprite:'deathknight.png' },\n      { nom:\"crab\", alive: true, sprite:'crab.png' },\n      { nom:\"goblin\", alive: false, sprite:'goblin.png' }\n    ];\n    var npcStore = new dojo.store.Memory({\n        data:npcs, idProperty: \"nom\"\n    });\n    \n    npcStore.query({alive:true}).forEach(function(npc){\n        // this is called for each not-yet-dead npc\n        console.log(npc.sprite);\n    });",
     "title": "Store example",
     "classes": "compact"
   },
   "promises": {
-    "body": "Increasing adoption, notably in jQuery. \n\nDo something then do something else\nWhen something is done, do this other thing\n",
+    "body": "Increasing adoption, notably in jQuery. \n\n* Do something then do something else\n* When something is done, do this other thing\n",
     "id": "promises",
     "title": "Promises",
     "x": "0",
     "y": "7"
+  },
+  "promises-example": {
+    "id": "promises-example",
+    "x": "1",
+    "y": "7",
+    "body": "    require(['promise'], function(Promise){\n      function pause(){\n        var start = +new Date, \n            promise = new Promise();\n        \n        setTimeout(function(){\n            var now = +new Date;\n            promise.resolve(start-now);\n        }, 1000);\n    \n        return promise;\n      }\n\n      pause().then(function(elapsed){\n        console.log(\"elapsed: \" + elapsed);\n      });\n\n    });",
+    "title": "Promises in Practice",
+    "classes": "compact"
   },
   "dojox-json": {
     "body": "JSON utilities: \n\n* JSON References, \n* JSON Schema\n* JSON Date",
